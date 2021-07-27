@@ -38,7 +38,9 @@ class WGSPuzzler:
 
     def se_sequencing(self,min_read_size=2000,max_read_size=40000,coverage=50,error_ratio=.07):
         self.operations.append(("se_sequencing",min_read_size,max_read_size,coverage,error_ratio))
-        
+    
+    def select_molecules(self,molecule_list):
+        self.operations.append(("select_molecules",molecule_list))
 
     def execute(self,seed=None,prefix="puzzle"):
         if seed is not None:
@@ -75,6 +77,9 @@ class WGSPuzzler:
                         new_seq[si]=rangen.choice(['A','C','G','T'])
                     self.ref_seqs.append(''.join(new_seq))
 
+            elif op[0]=="select_molecules":
+                self.ref_seqs=[x for i,x in enumerate(self.ref_seqs) if i in op[1]]
+                
             elif op[0]=="pe_sequencing":
                 optxt,read_size,coverage,min_fragment,max_fragment,error_ratio=op
                 quals="#"*read_size
