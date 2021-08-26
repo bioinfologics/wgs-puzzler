@@ -111,9 +111,9 @@ class WGSPuzzler:
                     for error_i in range(rangen.randint(0,errors_per_pair+1)):
                         r2seq[rangen.randint(read_size)]=rangen.choice(['A','C','G','T'])
                     
-                    #half of the time, flip r1 and r2 and their directions
+                    #half of the time, flip r1 and r2
                     if rangen.random()>=.5:
-                        r1seq,r2seq=list_rc(r2seq),list_rc(r1seq)
+                        r1seq,r2seq=r2seq,r1seq
                     #write to disk
                     r1f.write(f"@read_{rid:08}/1\n{''.join(r1seq)}\n+\n{quals}\n")
                     r2f.write(f"@read_{rid:08}/1\n{''.join(r2seq)}\n+\n{quals}\n")
@@ -145,7 +145,7 @@ class WGSPuzzler:
                     
                     #half of the time, flip read directions
                     if rangen.random()>=.5:
-                        list_rc(rseq)
+                        rseq=list_rc(rseq)
                     #write to disk
                     rf.write(f"@read_{rid:08}/1\n{''.join(rseq)}\n+\n{'#'*len(rseq)}\n")
                 rf.close()
